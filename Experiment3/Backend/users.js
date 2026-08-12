@@ -1,0 +1,24 @@
+const bcrypt = require("bcryptjs");
+
+const users = [
+  {
+    id: 1,
+    username: "admin",
+    password: bcrypt.hashSync("admin123", 10),
+    role: "admin",
+  },
+  {
+    id: 2,
+    username: "editor",
+    password: bcrypt.hashSync("editor123", 10),
+    role: "editor",
+  },
+  {
+    id: 3,
+    username: "user",
+    password: bcrypt.hashSync("user123", 10),
+    role: "user",
+  },
+];
+
+module.exports = users;
