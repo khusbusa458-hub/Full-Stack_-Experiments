@@ -1,63 +1,159 @@
-# Post Composer Mini-Project Setup Guide
+# Post Composer Mini-Project Setup Guide (Linux)
 
-This guide will walk you through the process of setting up and running the Post Composer mini-project, which consists of a React frontend and a Spring Boot backend.
+This guide provides step-by-step instructions to set up and run the **Post Composer** application on **Linux** (Ubuntu, Debian, Fedora, Arch Linux, etc.). The project consists of a **Spring Boot backend** (with an in-memory H2 database) and a **React (Vite) frontend**.
+
+---
 
 ## Prerequisites
 
-Before you begin, ensure you have the following installed on your machine:
-- **Java 17** (or higher)
-- **Node.js** (v14 or higher) and **npm**
+Before starting, ensure that your Linux system has the required software installed.
+
+### 1. Java Development Kit (JDK 17 or JDK 21)
+
+Verify if Java is installed:
+```bash
+java -version
+```
+
+If not installed, install OpenJDK via your package manager:
+
+- **Ubuntu / Debian / Mint:**
+  ```bash
+  sudo apt update
+  sudo apt install -y openjdk-21-jdk
+  ```
+- **Fedora / RHEL:**
+  ```bash
+  sudo dnf install -y java-21-openjdk-devel
+  ```
+- **Arch Linux:**
+  ```bash
+  sudo pacman -S jdk21-openjdk
+  ```
+
+---
+
+### 2. Node.js & npm (Node v18+ recommended)
+
+Verify if Node.js and npm are installed:
+```bash
+node -v
+npm -v
+```
+
+If not installed, install via your package manager or NodeSource:
+
+- **Ubuntu / Debian (via NodeSource):**
+  ```bash
+  curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+  sudo apt install -y nodejs
+  ```
+- **Ubuntu / Debian (Default repositories):**
+  ```bash
+  sudo apt update
+  sudo apt install -y nodejs npm
+  ```
+- **Fedora:**
+  ```bash
+  sudo dnf install -y nodejs npm
+  ```
+- **Arch Linux:**
+  ```bash
+  sudo pacman -S nodejs npm
+  ```
+
+---
 
 ## 1. Running the Backend (Spring Boot)
 
-The backend is built with Spring Boot and uses an in-memory H2 database, which means you don't need to install or configure any external database like MySQL.
+The backend runs on Spring Boot and uses an in-memory H2 database, requiring no external database installation.
 
-1. Open a terminal.
-2. Navigate to the `backend` directory inside the project folder:
+1. Open your Linux terminal.
+2. Navigate to the `backend` directory:
    ```bash
-   cd exp_5_code/backend
+   cd Experiment-5/backend
    ```
-3. Run the application using the included Gradle wrapper:
-   - On **Mac/Linux**:
-     ```bash
-     ./gradlew bootRun
-     ```
-   - On **Windows**:
-     ```cmd
-     gradlew.bat bootRun
-     ```
-4. The backend server will start on `http://localhost:8080`. Keep this terminal window open.
+3. Grant executable permission to the Gradle wrapper script (if not already set):
+   ```bash
+   chmod +x gradlew
+   ```
+4. Start the backend application:
+   ```bash
+   ./gradlew bootRun
+   ```
+5. The backend server will start at `http://localhost:8080`.
+   - Keep this terminal window open.
 
-## 2. Running the Frontend (React)
+---
 
-The frontend is built with React and Vite.
+## 2. Running the Frontend (React + Vite)
 
-1. Open a **new** terminal window (leave the backend terminal running).
+1. Open a **new terminal tab or window** (keep the backend terminal running).
 2. Navigate to the `frontend` directory:
    ```bash
-   cd exp_5_code/frontend
+   cd Experiment-5/frontend
    ```
-3. Install the required Node dependencies (you only need to do this once):
+3. Install the project dependencies (required on first run):
    ```bash
    npm install
    ```
-4. Start the development server:
+4. Start the Vite development server:
    ```bash
    npm run dev
    ```
-5. The frontend application will be available at `http://localhost:5173`. Open this URL in your web browser.
+5. The frontend application will start at `http://localhost:5173`.
+6. Open your web browser (e.g., Firefox, Chrome) and visit:
+   ```
+   http://localhost:5173
+   ```
+
+---
 
 ## Testing the Application
 
-Once both servers are running:
-1. Go to `http://localhost:5173`.
-2. You will see the Post Composer interface.
-3. Select a platform (Twitter, Instagram, or Facebook).
-4. Start typing your post. Notice the word count updating at the bottom.
-5. If you exceed the word limit for the selected platform, a red global error banner will appear at the top, and you won't be able to add more words.
-6. Click **Post** to save your message. It will appear in the "Recent Posts" list below, where you can easily edit or delete it.
+Once both the backend and frontend are running:
+1. Open `http://localhost:5173` in your browser.
+2. Select a target social media platform (**Twitter**, **Instagram**, or **Facebook**).
+3. Type your post in the text area and observe the real-time word counter.
+4. If the word limit for the selected platform is exceeded, a global error banner is displayed.
+5. Click **Post** to save your entry. The saved post will appear in the **Recent Posts** section, where you can edit or delete it.
 
-## Troubleshooting
+---
 
-- **Port in use**: If port 8080 or 5173 is already in use by another application, you will need to stop that application first.
-- **Dependencies not found**: Ensure you ran `npm install` in the frontend directory before running `npm run dev`.
+## Linux Troubleshooting & Useful Commands
+
+- **Permission Denied on `./gradlew`**:
+  Run `chmod +x gradlew` to add execution permissions.
+
+- **Port Already in Use (`8080` or `5173`)**:
+  Check which process is using the port and terminate it:
+  ```bash
+  # Check process on port 8080
+  sudo lsof -i :8080
+  # Kill process by PID
+  kill -9 <PID>
+
+  # Check process on port 5173
+  sudo lsof -i :5173
+  # Kill process by PID
+  kill -9 <PID>
+  ```
+
+- **Set Default Java Version**:
+  If multiple Java versions are installed, set the active version using:
+  ```bash
+  sudo update-alternatives --config java
+  ```
+
+- **Clean and Rebuild Backend**:
+  If you run into build caching issues:
+  ```bash
+  ./gradlew clean bootRun
+  ```
+
+- **Clear Node Dependencies**:
+  If npm throws dependency conflicts:
+  ```bash
+  rm -rf node_modules package-lock.json
+  npm install
+  ```
