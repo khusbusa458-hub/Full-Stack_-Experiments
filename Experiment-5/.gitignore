@@ -1,0 +1,19 @@
+# Node / frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Java / backend
+backend/.gradle/
+backend/build/
+backend/bin/
+backend/out/
+
+# OS / editor
+.DS_Store
+*.log
+.vscode/
+.idea/
+
+# project docs
+*.pdf
